@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weatherapp/views/additional_information.dart';
 import 'package:weatherapp/views/current_weather.dart';
 
 void main() {
@@ -61,7 +62,8 @@ class _HomePageState extends State<HomePage> {
           Divider(),
           SizedBox(
             height: 20,
-          )
+          ),
+          additionalInformation("24", "2", "1001", "24.6"),
         ],
       ),
     );
