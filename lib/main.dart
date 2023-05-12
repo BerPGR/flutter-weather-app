@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:weatherapp/model/weather_model.dart';
+import 'package:weatherapp/services/weather_api_client.dart';
 import 'package:weatherapp/views/additional_information.dart';
 import 'package:weatherapp/views/current_weather.dart';
 
@@ -26,6 +28,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  WeatherApiClient client = WeatherApiClient();
+  Weather? data;
+
+  Future<void> getData() async {
+    data = await client.getCurrentWeather("Lowell");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,26 +54,36 @@ class _HomePageState extends State<HomePage> {
             ),
             onPressed: () {}),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          currentWeather(Icons.wb_sunny_rounded, "26.3", "Georgia"),
-          SizedBox(
-            height: 60,
-          ),
-          Text(
-            "Additional Information",
-            style: TextStyle(
-                fontSize: 24,
-                color: Color(0xdd212121),
-                fontWeight: FontWeight.bold),
-          ),
-          Divider(),
-          SizedBox(
-            height: 20,
-          ),
-          additionalInformation("24", "2", "1001", "24.6"),
-        ],
+      body: FutureBuilder(
+        future: getData(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                currentWeather(
+                    Icons.wb_sunny_rounded, "${data!.temp}", "${data!.city}"),
+                SizedBox(
+                  height: 60,
+                ),
+                Text(
+                  "Additional Information",
+                  style: TextStyle(
+                      fontSize: 24,
+                      color: Color(0xdd212121),
+                      fontWeight: FontWeight.bold),
+                ),
+                Divider(),
+                SizedBox(
+                  height: 20,
+                ),
+                additionalInformation("${data!.wind}", "${data!.humidity}",
+                    "${data!.pressure}", "${data!.feels_like}"),
+              ],
+            );
+          }
+          return Container();
+        },
       ),
     );
   }
