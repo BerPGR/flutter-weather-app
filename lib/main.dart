@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weatherapp/views/current_weather.dart';
 
 void main() {
   runApp(const MyApp());
@@ -42,6 +43,26 @@ class _HomePageState extends State<HomePage> {
               color: Colors.black,
             ),
             onPressed: () {}),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          currentWeather(Icons.wb_sunny_rounded, "26.3", "Georgia"),
+          SizedBox(
+            height: 60,
+          ),
+          Text(
+            "Additional Information",
+            style: TextStyle(
+                fontSize: 24,
+                color: Color(0xdd212121),
+                fontWeight: FontWeight.bold),
+          ),
+          Divider(),
+          SizedBox(
+            height: 20,
+          )
+        ],
       ),
     );
   }
